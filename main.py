@@ -2,6 +2,7 @@ from agents.sentiment_agent import SentimentAgent, SentimentAgentInput
 from agents.market_impact_agent import MarketImpactAgent, MarketImpactAgentInput
 from agents.fact_check_agent import FactCheckAgent, FactCheckAgentInput
 from evaluation.evaluator import Evaluator
+from agents.coordinator_agent import coordinator_agent
 
 test_articles = [
     {
@@ -75,12 +76,7 @@ def pretty_print_result(result):
     print(f"    Rationale: {result['fact_check']['rationale']}")
 
 if __name__ == "__main__":
-    results = batch_analyze(test_articles)
-    print("\nAgent Results:")
-    for r in results:
-        pretty_print_result(r)
-    evaluator = Evaluator()
-    metrics = evaluator.evaluate(results, test_articles)
-    print("\nEvaluation Metrics:")
-    for k, v in metrics.items():
-        print(f"{k}: {v:.2f}" if isinstance(v, float) else f"{k}: {v}")
+    for article in test_articles:
+        print(f"\n=== Analyzing {article['article_id']} ===")
+        result = coordinator_agent(article)
+        print(result)
